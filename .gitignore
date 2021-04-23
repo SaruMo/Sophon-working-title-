@@ -2,6 +2,7 @@
 library/
 obj/
 .vs/
+Temp/
 
 # Ignore Logs
 logs

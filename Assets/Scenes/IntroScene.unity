@@ -250,7 +250,7 @@ Transform:
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &407032292
 MonoBehaviour:
@@ -278,7 +278,7 @@ PrefabInstance:
     - target: {fileID: 2304040348252247972, guid: ac7e9622485901e439ee3e13331c5044,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 27.36
+      value: 27.360003
       objectReference: {fileID: 0}
     - target: {fileID: 2304040348252247972, guid: ac7e9622485901e439ee3e13331c5044,
         type: 3}
@@ -293,17 +293,17 @@ PrefabInstance:
     - target: {fileID: 2304040348252247972, guid: ac7e9622485901e439ee3e13331c5044,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2304040348252247972, guid: ac7e9622485901e439ee3e13331c5044,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2304040348252247972, guid: ac7e9622485901e439ee3e13331c5044,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2304040348252247972, guid: ac7e9622485901e439ee3e13331c5044,
         type: 3}
@@ -313,7 +313,7 @@ PrefabInstance:
     - target: {fileID: 2304040348252247972, guid: ac7e9622485901e439ee3e13331c5044,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2304040348252247972, guid: ac7e9622485901e439ee3e13331c5044,
         type: 3}
@@ -338,12 +338,12 @@ PrefabInstance:
     - target: {fileID: 2304040348252247972, guid: ac7e9622485901e439ee3e13331c5044,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.11304413
+      value: 0.113044135
       objectReference: {fileID: 0}
     - target: {fileID: 8222522206159509907, guid: ac7e9622485901e439ee3e13331c5044,
         type: 3}
       propertyPath: m_Name
-      value: GrassJoinHillRight2 WithDropShadow (1)
+      value: ThinPlatform
       objectReference: {fileID: 0}
     - target: {fileID: 8222522206159509907, guid: ac7e9622485901e439ee3e13331c5044,
         type: 3}
@@ -545,6 +545,7 @@ MonoBehaviour:
   player: {fileID: 407032287}
   CameraPosition3D: {x: 1.23, y: 2.4, z: 10.1}
   CameraAngle3D: {x: 0, y: 0, z: 0}
+  YCameraOffset: 10
 --- !u!114 &1306428596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -689,7 +690,7 @@ PrefabInstance:
     - target: {fileID: 8222522206159509907, guid: ac7e9622485901e439ee3e13331c5044,
         type: 3}
       propertyPath: m_Name
-      value: GrassJoinHillRight2 WithDropShadow
+      value: StartPlatform
       objectReference: {fileID: 0}
     - target: {fileID: 8222522206159509907, guid: ac7e9622485901e439ee3e13331c5044,
         type: 3}

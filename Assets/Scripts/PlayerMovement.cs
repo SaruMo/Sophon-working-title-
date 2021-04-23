@@ -9,7 +9,7 @@ enum EPlatformContact
     eNotGrounded
 }
 
-public class Player_it_movement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     public float topSpeed = 10f;
     [SerializeField] private LayerMask platformsLayerMask;
