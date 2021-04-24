@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D m_rigidBody2D;
     private BoxCollider2D m_boxCollider2D;
     bool jumping = false;
+    bool moving = false;
     EPlatformContact m_groundedStatus = EPlatformContact.eGrounded;
     Vector2 m_lastSafePosition;
 
@@ -40,9 +41,14 @@ public class PlayerMovement : MonoBehaviour
         if (IsGrounded())
         {
             movementDirection = Input.GetAxis("Horizontal");
-            if(movementDirection != 0)
+            if(movementDirection != 0 && !moving)
             {
-                Debug.Log(gameObject.name + ": attempting to move: " + movementDirection);
+                Logging.LogComment(name, "attempting to move: " + movementDirection);
+                moving = true;
+            }
+            else
+            {
+                moving = false;
             }
             m_rigidBody2D.velocity = new Vector2(movementDirection * topSpeed, m_rigidBody2D.velocity.y);
         }
@@ -73,12 +79,12 @@ public class PlayerMovement : MonoBehaviour
         if(collided && m_groundedStatus == EPlatformContact.eNotGrounded)
         {
             m_groundedStatus = EPlatformContact.eGrounded;
-            Debug.Log(gameObject.name + ": Jump finished");
+            Logging.LogComment(name, "Jump finished");
         }
         else if(!collided && m_groundedStatus == EPlatformContact.eGrounded)
         {
             m_groundedStatus = EPlatformContact.eNotGrounded;
-            Debug.Log(gameObject.name + ": Jump started");
+            Logging.LogComment(name, "Jump started");
             m_lastSafePosition = transform.position;
         }
         return collided;
@@ -88,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
 
     void SaveMe()
     {
-        Debug.Log(gameObject.name + ": Save me");
+        Logging.LogComment(name, "Save me");
         m_rigidBody2D.velocity = Vector2.zero;
         transform.position = m_lastSafePosition;
     }

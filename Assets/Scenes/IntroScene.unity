@@ -543,8 +543,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   globalSettings: {fileID: 2014814715}
   player: {fileID: 407032287}
-  CameraPosition3D: {x: 1.23, y: 2.4, z: 10.1}
-  CameraAngle3D: {x: 0, y: 0, z: 0}
   YCameraOffset: 10
 --- !u!114 &1306428596
 MonoBehaviour:
@@ -606,6 +604,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ebb2e2a812239146ad0ed5e05e6bbbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player: {fileID: 407032287}
 --- !u!4 &2014814717
 Transform:
   m_ObjectHideFlags: 0

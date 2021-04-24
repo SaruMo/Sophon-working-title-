@@ -7,7 +7,7 @@ public class CameraBehaviour : MonoBehaviour
     // Start is called before the first frame update
     public GameObject globalSettings;
     public GameObject player;
-    public float YCameraOffset = 2f;
+    public float YCameraOffset = 0.0f;
 
     void Start()
     {
