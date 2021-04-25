@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public float topSpeed = 10f;
     public float jumpForce = 30f;
     [SerializeField] private LayerMask platformsLayerMask;
+    [SerializeField] private Camera mainCamera;
 
     private float movementDirection = 0.0f;
 
@@ -49,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
             else if(m_rigidBody2D.velocity == Vector2.zero && m_isMoving)
             {
                 Logging.LogComment(name, "Player has stopped moving");
+                m_isMoving = false;
             }
             m_rigidBody2D.velocity = new Vector2(movementDirection * topSpeed, m_rigidBody2D.velocity.y);
         }
@@ -59,11 +61,30 @@ public class PlayerMovement : MonoBehaviour
     #region Jump
     void CheckJump_()
     {
-        var jump = Input.GetKeyDown(KeyCode.Space);
+        var jump = Input.GetKeyDown(KeyCode.Mouse0);
         if (jump && IsGrounded())
         {
             m_rigidBody2D.velocity += (Vector2.up * jumpForce);
         }
+        else if(jump && !IsGrounded())
+        {
+            //mid-air boost
+            //freeze time for a specified amount of time to choose the direction of a boost
+            var mousePos = Input.mousePosition;
+            mousePos.z = mainCamera.nearClipPlane;
+            var screenToWorldMousePos = mainCamera.ScreenToWorldPoint(mousePos);
+            var angleFromPosToMouse = AngleBetweenVector2(transform.position, screenToWorldMousePos );
+            Logging.LogComment(name, "Mouse position for mid-air boost " + mousePos);
+            Logging.LogComment(name, "screenToWorld for mid-air boost " + screenToWorldMousePos);
+            Logging.LogComment(name, "angle from pos to mouse " + angleFromPosToMouse);
+        }
+    }
+
+    float AngleBetweenVector2(Vector2 vec1, Vector2 vec2)
+    {
+        Vector2 vec1Rotated90 = new Vector2(-vec1.y, vec1.x);
+        float sign = (Vector2.Dot(vec1Rotated90, vec2) < 0) ? -1.0f : 1.0f;
+        return Vector2.Angle(vec1, vec2) * sign;
     }
 
     bool IsGrounded()
