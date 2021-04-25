@@ -19,7 +19,6 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody2D m_rigidBody2D;
     private BoxCollider2D m_boxCollider2D;
-    bool m_isFalling = false;
     bool m_isMoving = false;
     EPlatformContact m_groundedStatus = EPlatformContact.eGrounded;
     Vector2 m_lastSafePosition;
@@ -42,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
         if (IsGrounded())
         {
             movementDirection = Input.GetAxis("Horizontal");
-            if(m_rigidBody2D.velocity!= Vector2.zero && !m_isMoving)
+            if (m_rigidBody2D.velocity!= Vector2.zero && !m_isMoving)
             {
                 Logging.LogComment(name, "Player has started moving " + movementDirection);
                 m_isMoving = true;
@@ -50,13 +49,6 @@ public class PlayerMovement : MonoBehaviour
             else if(m_rigidBody2D.velocity == Vector2.zero && m_isMoving)
             {
                 Logging.LogComment(name, "Player has stopped moving");
-                m_isFalling = false;
-                m_isMoving = false;
-            }
-            if(m_rigidBody2D.velocity.y < -0.1)
-            {
-                Logging.LogComment(name, "Player is falling");
-                m_isFalling = true;
             }
             m_rigidBody2D.velocity = new Vector2(movementDirection * topSpeed, m_rigidBody2D.velocity.y);
         }
@@ -70,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
         var jump = Input.GetKeyDown(KeyCode.Space);
         if (jump && IsGrounded())
         {
-            m_rigidBody2D.velocity = Vector2.up * jumpForce;
+            m_rigidBody2D.velocity += (Vector2.up * jumpForce);
         }
     }
 
@@ -90,6 +82,11 @@ public class PlayerMovement : MonoBehaviour
             m_lastSafePosition = transform.position;
         }
         return collided;
+    }
+
+    void SubscribeToDeath()
+    {
+
     }
 
     #endregion

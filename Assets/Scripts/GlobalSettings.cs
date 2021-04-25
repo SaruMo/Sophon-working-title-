@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class GlobalSettings : MonoBehaviour
 {
-    private bool is2D = true;
     public GameObject Player;
 
     private List<Vector2> savePoints;
@@ -44,6 +43,7 @@ public class GlobalSettings : MonoBehaviour
         {
             Logging.LogComment(name, "Player restored to last save point");
             Player.transform.position = m_latestSavePoint;
+            Logging.LogComment(name, "Player reset to " + m_latestSavePoint);
             return;
         }
         Logging.LogComment(name, "no save point for player to return to. FATAL ERROR");
@@ -56,8 +56,11 @@ public class GlobalSettings : MonoBehaviour
             Logging.LogComment(name, "save point given is null");
             return;
         }
-        Logging.LogComment(name, "Save point added: " + in_latestSavePoint);
-        savePoints.Add(in_latestSavePoint);
-        m_latestSavePoint = in_latestSavePoint;
+        if(!savePoints.Contains(in_latestSavePoint))
+        {
+            m_latestSavePoint = in_latestSavePoint;
+            Logging.LogComment(name, "Save point added: " + in_latestSavePoint);
+            savePoints.Add(in_latestSavePoint);
+        }
     }
 }
