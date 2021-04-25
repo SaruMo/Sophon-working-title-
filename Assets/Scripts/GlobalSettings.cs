@@ -49,7 +49,7 @@ public class GlobalSettings : MonoBehaviour
         Logging.LogComment(name, "no save point for player to return to. FATAL ERROR");
     }
 
-    void AddSavePoint(Vector2 in_latestSavePoint)
+    public void AddSavePoint(Vector2 in_latestSavePoint)
     {
         if (in_latestSavePoint == null)
         {

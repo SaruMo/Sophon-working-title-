@@ -12,14 +12,15 @@ enum EPlatformContact
 public class PlayerMovement : MonoBehaviour
 {
     public float topSpeed = 10f;
+    public float jumpForce = 30f;
     [SerializeField] private LayerMask platformsLayerMask;
 
     private float movementDirection = 0.0f;
 
     private Rigidbody2D m_rigidBody2D;
     private BoxCollider2D m_boxCollider2D;
-    bool jumping = false;
-    bool moving = false;
+    bool m_isFalling = false;
+    bool m_isMoving = false;
     EPlatformContact m_groundedStatus = EPlatformContact.eGrounded;
     Vector2 m_lastSafePosition;
 
@@ -41,25 +42,26 @@ public class PlayerMovement : MonoBehaviour
         if (IsGrounded())
         {
             movementDirection = Input.GetAxis("Horizontal");
-            if(movementDirection != 0 && !moving)
+            if(m_rigidBody2D.velocity!= Vector2.zero && !m_isMoving)
             {
-                Logging.LogComment(name, "attempting to move: " + movementDirection);
-                moving = true;
+                Logging.LogComment(name, "Player has started moving " + movementDirection);
+                m_isMoving = true;
             }
-            else
+            else if(m_rigidBody2D.velocity == Vector2.zero && m_isMoving)
             {
-                moving = false;
+                Logging.LogComment(name, "Player has stopped moving");
+                m_isFalling = false;
+                m_isMoving = false;
+            }
+            if(m_rigidBody2D.velocity.y < -0.1)
+            {
+                Logging.LogComment(name, "Player is falling");
+                m_isFalling = true;
             }
             m_rigidBody2D.velocity = new Vector2(movementDirection * topSpeed, m_rigidBody2D.velocity.y);
         }
 
         CheckJump_();
-
-        var saveMe = Input.GetKeyDown(KeyCode.S);
-        if(saveMe)
-        {
-            SaveMe();
-        }
     }
 
     #region Jump
@@ -68,7 +70,7 @@ public class PlayerMovement : MonoBehaviour
         var jump = Input.GetKeyDown(KeyCode.Space);
         if (jump && IsGrounded())
         {
-            m_rigidBody2D.velocity = Vector2.up * 50;
+            m_rigidBody2D.velocity = Vector2.up * jumpForce;
         }
     }
 
@@ -91,11 +93,4 @@ public class PlayerMovement : MonoBehaviour
     }
 
     #endregion
-
-    void SaveMe()
-    {
-        Logging.LogComment(name, "Save me");
-        m_rigidBody2D.velocity = Vector2.zero;
-        transform.position = m_lastSafePosition;
-    }
 }

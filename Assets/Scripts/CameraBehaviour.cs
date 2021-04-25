@@ -16,10 +16,10 @@ public class CameraBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = new Vector3(player.transform.position.x, player.transform.position.y - YCameraOffset, transform.position.z);
-        var xAngle = -transform.rotation.x;
-        var yAngle = -transform.rotation.y;
-        var zAngle = -transform.rotation.z;
-        transform.eulerAngles = new Vector3(0, 0, 0);
+        //transform.position = new Vector3(player.transform.position.x, player.transform.position.y - YCameraOffset, transform.position.z);
+        //var xAngle = -transform.rotation.x;
+        //var yAngle = -transform.rotation.y;
+        //var zAngle = -transform.rotation.z;
+        //transform.eulerAngles = new Vector3(0, 0, 0);
     }
 }
