@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ButtonPressing : MonoBehaviour
+public class ButtonPressing
 {
     /// <summary>
     ///     true if the button was pressed on the last checked frame and the previous frame wasn't pressed
@@ -19,14 +19,15 @@ public class ButtonPressing : MonoBehaviour
     /// <summary>
     ///     true if the button was released in the last checked frame and the previous frame was pressed
     /// </summary>
-    bool m_isFirstFramneReleased = false;
-    public bool IsFirstFrameReleased { get { return m_isFirstFramneReleased; } }
+    bool m_isFirstFrameReleased = false;
+    public bool IsFirstFrameReleased { get { return m_isFirstFrameReleased; } }
 
     bool m_lastFrameWasButtonPressed = false;
 
     KeyCode m_keyCode;
     string m_buttonName;
-    ButtonLogging m_buttonLogging
+    ButtonLogging m_buttonLogging;
+    string m_name = "ButtonPressing";
 
     public ButtonPressing( KeyCode in_keyCode, ButtonLogging in_buttonLogging = null )
     {
@@ -40,17 +41,14 @@ public class ButtonPressing : MonoBehaviour
         m_buttonLogging = in_buttonLogging;
     }
 
-    void Start()
-    { }
-
-    void Update()
+    public void UpdateState()
     {
-        if(m_keyCode != null)
+        if(m_keyCode != KeyCode.None)
         {
             CheckKeyCodeValue();
         }
 
-        if(m_keyName != null)
+        if(m_buttonName != null)
         {
             CheckButtonNameValue();
         }
@@ -63,28 +61,29 @@ public class ButtonPressing : MonoBehaviour
         {
             if( !m_lastFrameWasButtonPressed )
             {
+                //Logging.LogComment(m_name, "m_isFirstFramePressed = true");
                 m_isFirstFramePressed = true;
             }
             else
             {
+                //Logging.LogComment(m_name, "m_isFirstFramePressed = false");
                 m_isFirstFramePressed = false;
             }
             m_isCurrentlyPressed = true;
-
-            m_isFirstFramneReleased = true;
         }
         else
         {
             if( m_lastFrameWasButtonPressed )
             {
-                m_isFirstFramneReleased = true;
+                //Logging.LogComment(m_name, "m_isFirstFrameReleased = true");
+                m_isFirstFrameReleased = true;
             }
             else
             {
-                m_isFirstFramneReleased = false;
+                m_isFirstFrameReleased = false;
             }
         }
-
+        Logging.LogComment(m_name, "buttonPressed = " + buttonPressed);
         m_lastFrameWasButtonPressed = buttonPressed;
     }
 

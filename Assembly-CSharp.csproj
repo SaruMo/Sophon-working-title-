@@ -68,7 +68,9 @@
     <Compile Include="Assets\Scripts\DimensionalRiftBehaviour.cs" />
     <Compile Include="Assets\Scripts\GlobalSettings.cs" />
     <Compile Include="Assets\Scripts\PlayerMovement.cs" />
-    <Compile Include="Assets\Scripts\Utilities\Logging.cs" />
+    <Compile Include="Assets\Scripts\Utilities\Input\ButtonLogging.cs" />
+    <Compile Include="Assets\Scripts\Utilities\Input\ButtonPressing.cs" />
+    <Compile Include="Assets\Scripts\Utilities\Logging\Logging.cs" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.7f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

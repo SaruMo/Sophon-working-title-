@@ -7,6 +7,7 @@ Temp/
 # Ignore Logs
 logs
 *.log
+*.meta
 
 # Ignore the build directory
 /dist
