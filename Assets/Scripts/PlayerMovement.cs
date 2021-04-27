@@ -73,8 +73,9 @@ public class PlayerMovement : MonoBehaviour
             if (midAirBoostJump)
             {
                 var mousePos = Input.mousePosition;
-                mousePos.z = 1f;
+                mousePos.z = transform.position.z;
                 var screenToWorldMousePos = Camera.main.ScreenToWorldPoint(mousePos);
+                screenToWorldMousePos = transform.position.z;
                 var angleFromPosToMouse = AngleBetweenVector2(transform.position, screenToWorldMousePos);
                 GetAngleByMaths(transform.position, screenToWorldMousePos);
                 GetAngleMyAttempt(transform.position, screenToWorldMousePos);
