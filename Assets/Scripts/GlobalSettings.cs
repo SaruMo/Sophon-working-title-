@@ -9,7 +9,7 @@ public class GlobalSettings : MonoBehaviour
 
     private List<Vector2> savePoints;
     private Vector2 m_latestSavePoint;
-    private float m_YPositionBottomBoundary = -5.0f;
+    private const float cY_POSITION_BOTTOM_BOUNDARY = -60.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -34,7 +34,7 @@ public class GlobalSettings : MonoBehaviour
 
     bool IsOutOfBounds()
     {
-        return Player.transform.position.y < m_YPositionBottomBoundary;
+        return Player.transform.position.y < cY_POSITION_BOTTOM_BOUNDARY;
     }
 
     void ResetToLastSafePosition()

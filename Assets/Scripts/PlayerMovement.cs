@@ -16,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask platformsLayerMask;
 
     private float movementDirection = 0.0f;
+    private const uint cMAX_MID_AIR_BOOSTS = 1;
+    private uint m_numberOfMidAirBoosts = 0;
 
     private Rigidbody2D m_rigidBody2D;
     private BoxCollider2D m_boxCollider2D;
@@ -53,12 +55,12 @@ public class PlayerMovement : MonoBehaviour
             m_rigidBody2D.velocity = new Vector2(movementDirection * topSpeed, m_rigidBody2D.velocity.y);
         }
 
-        CheckJump_();
+        PerformJump_();
         //TestButtonClickedDownAndReleased_();
     }
 
     #region Jump
-    void CheckJump_()
+    void PerformJump_()
     {
         var jump = Input.GetKeyDown(KeyCode.Mouse0);
         if (jump && IsGrounded())
@@ -70,19 +72,27 @@ public class PlayerMovement : MonoBehaviour
             var midAirBoostJump = Input.GetKeyDown(KeyCode.Mouse0);
             //mid-air boost
             //freeze time for a specified amount of time to choose the direction of a boost
-            if (midAirBoostJump)
+            if (midAirBoostJump && m_numberOfMidAirBoosts < cMAX_MID_AIR_BOOSTS)
             {
-                var mousePos = Input.mousePosition;
-                mousePos.z = transform.position.z;
-                var screenToWorldMousePos = Camera.main.ScreenToWorldPoint(mousePos);
-                screenToWorldMousePos = transform.position.z;
-                var angleFromPosToMouse = AngleBetweenVector2(transform.position, screenToWorldMousePos);
-                GetAngleByMaths(transform.position, screenToWorldMousePos);
-                GetAngleMyAttempt(transform.position, screenToWorldMousePos);
-                Logging.LogComment(name, "Mouse position for mid-air boost " + mousePos);
-                Logging.LogComment(name, "screenToWorld for mid-air boost " + screenToWorldMousePos);
+                PerformMidAirBoost_();
+                m_numberOfMidAirBoosts++;
             }
         }
+    }
+
+    void PerformMidAirBoost_()
+    {
+        // for now just a double jump but need to improve to boost in a particular direction
+        var mousePos = Input.mousePosition;
+        var screenToWorldMousePos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, Camera.main.transform.position.z));
+        //screenToWorldMousePos.z = 30;
+        var angleFromPosToMouse = AngleBetweenVector2(transform.position, screenToWorldMousePos);
+        //GetAngleByMaths(transform.position, screenToWorldMousePos);
+        Logging.LogComment(name, "Mouse position for mid-air boost " + mousePos);
+        Logging.LogComment(name, "screenToWorld for mid-air boost " + screenToWorldMousePos);
+
+        var xThrust = m_rigidBody2D.velocity.y > 0 ? jumpForce - m_rigidBody2D.velocity.y : Math.Abs(m_rigidBody2D.velocity.y) + jumpForce;
+        m_rigidBody2D.velocity += new Vector2(m_rigidBody2D.velocity.x, xThrust);
     }
 
     float AngleBetweenVector2(Vector2 vec1, Vector2 vec2)
@@ -110,15 +120,6 @@ public class PlayerMovement : MonoBehaviour
         return angle;
     }
 
-    float GetAngleMyAttempt(Vector2 vec1, Vector2 vec2)
-    {
-        var firstAngle = Mathf.Atan(vec1.magnitude / vec2.magnitude);
-        var toDegrees = firstAngle * Mathf.Rad2Deg;
-        Logging.LogComment(name, "GetAngleMyAttempt( " + vec1 + ", " + vec2 + " ) = " + toDegrees);
-        return toDegrees;
-    }
-
-
     bool IsGrounded()
     {
         RaycastHit2D rayCastHit = Physics2D.BoxCast(m_boxCollider2D.bounds.center, m_boxCollider2D.bounds.size, 0f, Vector2.down, 1f, platformsLayerMask);
@@ -126,6 +127,7 @@ public class PlayerMovement : MonoBehaviour
         if (collided && m_groundedStatus == EPlatformContact.eNotGrounded)
         {
             m_groundedStatus = EPlatformContact.eGrounded;
+            m_numberOfMidAirBoosts = 0;
             Logging.LogComment(name, "Jump finished");
         }
         else if (!collided && m_groundedStatus == EPlatformContact.eGrounded)
@@ -135,19 +137,6 @@ public class PlayerMovement : MonoBehaviour
             m_lastSafePosition = transform.position;
         }
         return collided;
-    }
-
-    //void TestButtonClickedDownAndReleased_()
-    //{
-    //    if(Input.GetButton( KeyCode.Mouse0 ))
-    //    {
-    //        Logging.LogComment( name, "Button pressed" );
-    //    }
-    //}
-
-    void SubscribeToDeath()
-    {
-
     }
 
     #endregion
