@@ -56,7 +56,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         PerformJump_();
-        //TestButtonClickedDownAndReleased_();
     }
 
     #region Jump
