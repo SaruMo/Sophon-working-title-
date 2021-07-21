@@ -41,21 +41,25 @@ public class PlayerMovement : MonoBehaviour
     {
         if (IsGrounded())
         {
-            movementDirection = Input.GetAxis("Horizontal");
-            if (m_rigidBody2D.velocity != Vector2.zero && !m_isMoving)
-            {
-                Logging.LogComment(name, "Player has started moving " + movementDirection);
-                m_isMoving = true;
-            }
-            else if (m_rigidBody2D.velocity == Vector2.zero && m_isMoving)
-            {
-                Logging.LogComment(name, "Player has stopped moving");
-                m_isMoving = false;
-            }
-            m_rigidBody2D.velocity = new Vector2(movementDirection * topSpeed, m_rigidBody2D.velocity.y);
+            HorizontalMovement_();
         }
-
         PerformJump_();
+    }
+
+    void HorizontalMovement_()
+    {
+        movementDirection = Input.GetAxis("Horizontal");
+        if (m_rigidBody2D.velocity != Vector2.zero && !m_isMoving)
+        {
+            Logging.LogComment(name, "Player has started moving " + movementDirection);
+            m_isMoving = true;
+        }
+        else if (m_rigidBody2D.velocity == Vector2.zero && m_isMoving)
+        {
+            Logging.LogComment(name, "Player has stopped moving");
+            m_isMoving = false;
+        }
+        m_rigidBody2D.velocity = new Vector2(movementDirection * topSpeed, m_rigidBody2D.velocity.y);
     }
 
     #region Jump
@@ -73,6 +77,7 @@ public class PlayerMovement : MonoBehaviour
             //freeze time for a specified amount of time to choose the direction of a boost
             if (midAirBoostJump && m_numberOfMidAirBoosts < cMAX_MID_AIR_BOOSTS)
             {
+                HorizontalMovement_();
                 PerformMidAirBoost_();
                 m_numberOfMidAirBoosts++;
             }
@@ -84,9 +89,7 @@ public class PlayerMovement : MonoBehaviour
         // for now just a double jump but need to improve to boost in a particular direction
         var mousePos = Input.mousePosition;
         var screenToWorldMousePos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, Camera.main.transform.position.z));
-        //screenToWorldMousePos.z = 30;
         var angleFromPosToMouse = AngleBetweenVector2(transform.position, screenToWorldMousePos);
-        //GetAngleByMaths(transform.position, screenToWorldMousePos);
         Logging.LogComment(name, "Mouse position for mid-air boost " + mousePos);
         Logging.LogComment(name, "screenToWorld for mid-air boost " + screenToWorldMousePos);
 
@@ -101,21 +104,6 @@ public class PlayerMovement : MonoBehaviour
         var angle = Vector2.Angle(vec1, vec2) * sign;
         Logging.LogComment(name, "AngleBetweenVector2( " + vec1 + ", " + vec2 + " ) = " + angle);
 
-        return angle;
-    }
-
-    float GetAngleByMaths(Vector2 vec1, Vector2 vec2)
-    {
-        //Get the dot product
-        var dot = Vector2.Dot(vec1, vec2);
-        // Divide the dot by the product of the magnitudes of the vectors
-        dot = dot / (vec1.magnitude * vec2.magnitude);
-        //Get the arc cosin of the angle, you now have your angle in radians 
-        var acos = Mathf.Acos(dot);
-        //Multiply by 180/Mathf.PI to convert to degrees
-        var angle = acos * 180 / Mathf.PI;
-        //Congrats, you made it really hard on yourself.
-        Logging.LogComment(name, "GetAngleByMaths( " + vec1 + ", " + vec2 + " ) = " + angle);
         return angle;
     }
 
